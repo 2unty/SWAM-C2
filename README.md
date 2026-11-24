@@ -2,6 +2,8 @@
 
 An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes
 
+![DC menu screenshot](assests/DC1Example.png)
+
 ## What is included:
 
 ### Custom payload generator:
