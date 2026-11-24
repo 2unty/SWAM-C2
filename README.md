@@ -2,7 +2,7 @@
 
 An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes
 
-![DC menu screenshot](assets/DC1Example.png)
+![DC menu screenshot](Assets/DC1Example.png)
 
 ## What is included:
 
