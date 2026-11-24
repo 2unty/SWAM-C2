@@ -31,7 +31,6 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
     private JButton deleteAliasFromSelectedButton;
     private JButton switchToWindowsButton;
     private JButton getInformationButton;
-    private JButton setAliasesToHostnamesButton;
     private JButton updateBeaconTimeButton;
     //private JLabel pictureLabel;
     private RequestCalls apiHandle;
