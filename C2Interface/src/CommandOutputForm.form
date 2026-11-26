@@ -19,6 +19,8 @@
             <constraints/>
             <properties>
               <editable value="false"/>
+              <font name="Terminess Nerd Font" size="20" style="0"/>
+              <foreground color="-15132391"/>
               <lineWrap value="false"/>
               <text value=""/>
             </properties>

