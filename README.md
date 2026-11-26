@@ -2,9 +2,17 @@
 
 An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes
 
-![IP Menu](Assets/IPMenu.png)
+<p align="center">
+<img src="Assets/IPMenu.png" alt="IPMenu"/>
+<br>
+<em>Enter the C2 IP</em>
+</p>
 
-![Windows Machine Menu](Assets/WindowsMenu.png)
+<p align="center">
+<img src="Assets/WindowsMenu.png" alt="Windows Machine Menu"/>
+<br>
+<em>Main Menu</em>
+</p>
 
 ## What is included:
 
