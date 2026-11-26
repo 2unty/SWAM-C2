@@ -78,7 +78,7 @@ Start-Process "powershell.exe" -ArgumentList "-NoProfile", "-Command", ([System.
 ```
 Now all you have to do is run the top command on your machine and the bottom command on the Windows host. 
 
-It takes ~10 seconds for Linux hosts to begin beaconing after running the inital command and ~30 seconds for Windows.
+It takes ~10 seconds for Linux hosts to begin beaconing after running the inital command and ~18 seconds for Windows.
 
 ## Teardown
 
