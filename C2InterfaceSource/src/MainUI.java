@@ -42,7 +42,7 @@ public class MainUI extends JFrame{
                     fetchedIPs = apiHandle.queryBackend("FINDCLIENTS", "", 3);
                     //JOptionPane.showMessageDialog(null, "Machines found:\n"+fetchedIPs);
                     //JOptionPane.showMessageDialog(null, "Machines found:\n"+fetchedIPs, "Found machines", JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new ImageIcon("SwaminHolder.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
-                    String bootDialog = fetchedIPs.split("\n").length > 1 ? fetchedIPs.split("\n").length+" hosts found\n"+fetchedIPs : "No hosts found!";
+                    String bootDialog = !fetchedIPs.split("\n")[0].equals("None") ? fetchedIPs.split("\n").length+" hosts found\n"+fetchedIPs : "No hosts found!";
                     new CustomDialog(bootDialog, "Found machines", "Cross.png");
                     new MenuForm(apiHandle);
                     MainUI.this.setVisible(false);

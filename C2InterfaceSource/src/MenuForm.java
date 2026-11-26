@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.nio.file.*;
 
@@ -318,11 +319,13 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
                 new CustomDialog("No value selected!", "Something went wrong!", "Warning.png");
                 return;
             }
-            String resp = apiHandle.queryBackend("FETCHCLIENTRESPONSE", responseList.getSelectedValue(), osToggle);
-            if(resp.equals("1")){
-                new CommandOutputForm("No response");
-            }else {
+            String rawResp = apiHandle.queryBackend("FINDCLIENTRESPONSE", responseList.getSelectedValue(), osToggle);
+            if(!rawResp.equals("None") && !rawResp.equals("1")){
+                byte[] returnBytes = Base64.getMimeDecoder().decode(rawResp);
+                String resp = new String(returnBytes, StandardCharsets.UTF_8); // Decode base64 encoded output from client output
                 new CommandOutputForm(resp);
+            }else{
+                new CommandOutputForm("No response");
             }
         } catch (IOException | InterruptedException ex) {
             new CustomDialog("Couldn't fetch: "+ex, "Something went wrong!");
