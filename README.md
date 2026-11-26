@@ -5,6 +5,9 @@
 <div>
     <img src="Assets/Cross.png" height=250 alt="Vie Cross"/>
 </div>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 <p>An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes</p>
 <div>
     <img src="Assets/IPMenu.png" alt="IPMenu"/>
