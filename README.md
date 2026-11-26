@@ -4,7 +4,7 @@ An extremely light-weight command-and-control server and interface built for com
 
 ![IP Menu](Assets/IPMenu.png)
 
-![Windows Machine Menu](Assets/.png)
+![Windows Machine Menu](Assets/WindowsMenu.png)
 
 ## What is included:
 

@@ -1,1 +1,4 @@
 AliasSave.txt
+PayloadGenerator/Beam
+PayloadGenerator/runner.ps1
+PayloadGenerator/runner.sh
