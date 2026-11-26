@@ -1,7 +1,7 @@
 <div align="center">
 
 <div>
-    <img src="Assets/Cross.png" alt="Vie Cross"/>
+    <img src="Assets/Cross.png" height=100 alt="Vie Cross"/>
 </div>
 
 # SWAM-C2
