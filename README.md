@@ -2,14 +2,17 @@
 
 
 <div align="center">
-<p>An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes</p>
-<img src="Assets/IPMenu.png" alt="IPMenu"/>
-<br>
-<em>Enter the C2 IP and Port</em>
-
-<img src="Assets/WindowsMenu.png" alt="Windows Machine Menu"/>
-<br>
-<em>Main Menu</em>
+    <p>An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes</p>
+    <div>
+        <img src="Assets/IPMenu.png" alt="IPMenu"/>
+        <br>
+        <em>Enter the C2 IP and Port</em>
+    </div>
+    <div>
+        <img src="Assets/WindowsMenu.png" alt="Windows Machine Menu"/>
+        <br>
+        <em>Main Menu</em>
+    </div>
 </div>
 
 ## What is included
