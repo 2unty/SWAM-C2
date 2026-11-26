@@ -1,8 +1,8 @@
 # SWAM-C2
 
-An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes
 
 <div align="center">
+<p>An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes</p>
 <img src="Assets/IPMenu.png" alt="IPMenu"/>
 <br>
 <em>Enter the C2 IP and Port</em>
