@@ -14,7 +14,7 @@ An extremely light-weight command-and-control server and interface built for com
 <em>Main Menu</em>
 </p>
 
-## What is included:
+## What is included
 
 ### Custom payload generator:
  - Python based
@@ -32,7 +32,7 @@ An extremely light-weight command-and-control server and interface built for com
  - An easy to configure PHP API used for communication between the command-and-control user and infected hosts
  - File-based database
 
-## Set up steps:
+## Set up steps
 
 ### Set-up webserver Docker image:
 First build the docker image. 
@@ -80,7 +80,7 @@ Now all you have to do is run the top command on your machine and the bottom com
 
 It takes ~10 seconds for Linux hosts to begin beaconing after running the inital command and ~30 seconds for Windows.
 
-## Teardown:
+## Teardown
 
 ### Turn off Docker image:
 Run:
