@@ -1,5 +1,9 @@
 <div align="center">
 
+<div>
+    <img src="Assets/Cross.png" alt="Vie Cross"/>
+</div>
+
 # SWAM-C2
 
 <p>An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes</p>
