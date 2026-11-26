@@ -30,11 +30,7 @@ An extremely light-weight command-and-control server and interface built for com
 
 ### Apache2/PHP-based backend & API:
  - An easy to configure PHP API used for communication between the command-and-control user and infected hosts
- - Requires apache2, php, and libapache2-mod-php in order to run
  - File-based database
-
-### Set-up script:
- - Downloads dependencies and sets up server backend
 
 ## Set up steps:
 
