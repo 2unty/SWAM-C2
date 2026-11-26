@@ -5,7 +5,7 @@ An extremely light-weight command-and-control server and interface built for com
 <p align="center">
 <img src="Assets/IPMenu.png" alt="IPMenu"/>
 <br>
-<em>Enter the C2 IP</em>
+<em>Enter the C2 IP and Port</em>
 </p>
 
 <p align="center">
