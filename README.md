@@ -28,7 +28,7 @@
 ### Custom payload generator:
  - Python based
  - Can either create Linux or Windows payloads
- - Parameterizes file names, and beacon intervals, call out ports, etc. all within one command
+ - Parameterizes file names, beacon intervals, call out ports, etc. all within one command
  - Payloads contain a beaconing script that reads base64 encoded commands from the C2, decodes them, executes, and sends back any responses
  - Comes with custom fun deployable scripts 
 
