@@ -29,11 +29,13 @@ An extremely light-weight command-and-control server and interface built for com
 ## Set up steps:
 
 ### Set-up webserver Docker image:
-First build the docker image. **YOU ONLY NEED TO DO THIS ONCE**: 
+First build the docker image. 
+**YOU ONLY NEED TO DO THIS ONCE**: 
 ```sh
 docker build -t server-backend-image .
 ```
-Second run the docker container with your chosen callback port. In this case, I'll choose port 10010. **RUN THIS WHENEVER YOU WANT TO HOST THE WEBSERVER**:
+Second run the docker container with your chosen callback port. In this case, I'll choose port 10010. 
+**RUN THIS WHENEVER YOU WANT TO HOST THE WEBSERVER**:
 ```sh
 docker run -d --name server-backend -p 10010:80 server-backend-image
 ```
