@@ -1,8 +1,6 @@
-# SWAM-C2
-
-
 <div align="center">
-    <p>An  light-weight command-and-control server and interface built for competition, workshop, and labbing purposes</p>
+    # SWAM-C2
+    <p>An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes</p>
     <div>
         <img src="Assets/IPMenu.png" alt="IPMenu"/>
         <br>
