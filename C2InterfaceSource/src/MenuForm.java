@@ -58,7 +58,7 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
         ToggleMap.put(1, linuxHostNames);
         ToggleMap.put(2, windowsHostNames);
         setContentPane(menuPanel); // Set the content pane to the panel object you manually created
-        setSize(900,500); // Sets size
+        setSize(900,510); // Sets size
         setLocationRelativeTo(null);
         setTitle("VIE C2 Main Menu"); // Title
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/SwaminHolder.png")));
@@ -78,6 +78,9 @@ public class MenuForm extends JFrame { // Make sure Class extends JFrame
         buttonPanel.setBackground(new Color(25, 25, 25));
         hostList.setBackground(new Color(25, 25, 25));
         responseList.setBackground(new Color(25, 25, 25));
+        /*JScrollBar hostScroll = pingScroll.getVerticalScrollBar();
+        pingScroll.setBackground(new Color(25, 25, 25));
+        pingScroll.setForeground(new Color(25, 25, 25));*/
 
 
         // Events

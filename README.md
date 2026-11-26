@@ -2,7 +2,9 @@
 
 An extremely light-weight command-and-control server and interface built for competition, workshop, and labbing purposes
 
-![DC menu screenshot](Assets/DC1Example.png)
+![IP Menu](Assets/IPMenu.png)
+
+![Windows Machine Menu](Assets/.png)
 
 ## What is included:
 
@@ -42,10 +44,10 @@ docker run -d --name server-backend -p 10010:80 server-backend-image
 The webserver backend will now be running and operational on port 10010 of your machine and port 80 of the container.
 
 ### Set-up interface
-Next, open the Java project and build it
+Next, open the interface by double clicking on ``SWAMC2.jar``
 
 ### Set-up payload
-Finally, generate a payload with ``python3 GenPayload.py``:
+Finally, generate a payload with ``GenPayload.py``:
 ```sh
 # Example of a generated payload for:
 # Windows 64-bit architecture
